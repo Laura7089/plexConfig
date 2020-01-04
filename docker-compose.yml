@@ -19,6 +19,9 @@ services:
     image: linuxserver/plex
     environment:
       - VERSION=docker
+    networks:
+      - rp-subdomains
+      - default
     ports:
       - "32400:32400"
       - "32400:32400/udp"
