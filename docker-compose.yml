@@ -1,0 +1,117 @@
+x-defaults: &defaults
+  environment:
+    - PUID=${PUID}
+    - PGID=${PGID}
+    - TZ=${TZ}
+  logging:
+    driver: json-file
+    options:
+      max-file: ${DOCKERLOGGING_MAXFILE}
+      max-size: ${DOCKERLOGGING_MAXSIZE}
+  restart: unless-stopped
+  volumes:
+    - "/etc/localtime:/etc/localtime:ro"
+
+services:
+  plex:
+    <<: *defaults
+    container_name: plex
+    image: linuxserver/plex
+    environment:
+      - VERSION=docker
+    ports:
+      - "32400:32400"
+      - "32400:32400/udp"
+      - "32469:32469"
+      - "32469:32469/udp"
+      - "5353:5353/udp"
+      - "1900:1900/udp"
+    volumes:
+      - "${DOCKERCONFDIR}/plex:/config"
+      - "${DATA_MOUNTPOINT}/tvshows:/data/tvshows"
+      - "${DATA_MOUNTPOINT}/movies:/data/movies"
+
+  ombi:
+    <<: *defaults
+    container_name: ombi
+    image: linuxserver/ombi
+    networks:
+      - rp-subdomains
+      - default
+    ports:
+      - "3579:3579"
+    volumes:
+      - "${DOCKERCONFDIR}/ombi:/config"
+
+  delugevpn:
+    <<: *defaults
+    cap_add:
+      - NET_ADMIN
+    container_name: delugevpn
+    env_file: "vpn.env"
+    image: binhex/arch-delugevpn
+    ports:
+      - "${LOCAL_IP_ADDR}:8112:8112"
+      - "58846:58846"
+      - "58946:58946"
+    volumes:
+      - "${DOCKERCONFDIR}/delugevpn:/config"
+      - "${DATA_MOUNTPOINT}/downloads:/data"
+
+  jackett:
+    <<: *defaults
+    container_name: jackett
+    image: linuxserver/jackett
+    ports:
+      - "${LOCAL_IP_ADDR}:9117:9117"
+    volumes:
+      - "${DOCKERCONFDIR}/jackett:/config"
+      - "${DATA_MOUNTPOINT}/downloads:/downloads"
+
+  sonarr:
+    <<: *defaults
+    container_name: sonarr
+    image: linuxserver/sonarr
+    ports:
+      - "${LOCAL_IP_ADDR}:8989:8989"
+    volumes:
+      - "${DOCKERCONFDIR}/sonarr:/config"
+      - "${DATA_MOUNTPOINT}/tvshows:/tv"
+      - "${DATA_MOUNTPOINT}/downloads:/downloads"
+
+  radarr:
+    <<: *defaults
+    container_name: radarr
+    image: linuxserver/radarr
+    ports:
+      - "${LOCAL_IP_ADDR}:7878:7878"
+    volumes:
+      - "${DOCKERCONFDIR}/radarr:/config"
+      - "${DATA_MOUNTPOINT}/movies:/movies"
+      - "${DATA_MOUNTPOINT}/downloads:/downloads"
+
+  tautulli:
+    <<: *defaults
+    container_name: tautulli
+    image: linuxserver/tautulli
+    ports:
+      - "${LOCAL_IP_ADDR}:8181:8181"
+    volumes:
+      - "${DOCKERCONFDIR}/tautulli:/config"
+      - "${DOCKERCONFDIR}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro"
+
+  organizr:
+    <<: *defaults
+    container_name: organizr
+    image: linuxserver/organizr
+    ports:
+      - "${LOCAL_IP_ADDR}:9983:80"
+    volumes:
+      - "${DOCKERCONFDIR}/organizr:/config"
+
+networks:
+  rp-subdomains:
+    external:
+      name: ${RP_NETWORK_NAME}
+
+version: "3.4"
