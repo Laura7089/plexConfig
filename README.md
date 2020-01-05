@@ -20,9 +20,9 @@ The docker-compose and environment files in this repo define a configuration for
 - Docker-compose
 
 ### Instructions
-1. Clone this repo:
+1. Clone this repo and switch to the directory:
 
-   `git clone https://github.com/Laura7089/plexConfig`
+   `git clone https://github.com/Laura7089/plexConfig && cd plexConfig`
 2. Copy `.env.example` into `.env` and `vpn.env.example` into `vpn.env`
 3. Populate these files with the options you desire, make sure to keep them exacty in the format `VAR=VAL`
 4. Run `docker-compose up -d`
