@@ -7,11 +7,12 @@ The docker-compose and environment files in this repo define a configuration for
 - Sonarr
 - Jackett
 - Tautulli
-- Ombi (Requires reverse proxy)
+- Ombi
 - Deluge (with VPN attached)
 
 > Note that all images but deluge are set to use the images from [LinuxServer.io](https://linuxserver.io).
 > Deluge uses [the image created by binhex](https://github.com/binhex/arch-delugevpn)
+> Plex and Ombi are preconfigured for setup with a reverse proxy.
 
 ## Installation
 
