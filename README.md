@@ -32,3 +32,6 @@ The docker-compose and environment files in this repo define a configuration for
 If you want to provide a reverse proxy pointing at the public services Ombi and Plex (if you want to use https, for example), you can place the container running it on the network you specified under `RP_NETWORK_NAME` for ease of routing using docker's hostname resolution.
 
 I use [linuxserver's letsencrypt image](https://hub.docker.com/r/linuxserver/letsencrypt) for this.
+
+## Disclaimer
+This data is provided as-is, I do not condone or encourage usage of this software for illegitimate activity of any form.
