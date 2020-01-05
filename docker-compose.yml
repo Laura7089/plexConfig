@@ -6,8 +6,8 @@ x-defaults: &defaults
   logging:
     driver: json-file
     options:
-      max-file: ${DOCKERLOGGING_MAXFILE}
-      max-size: ${DOCKERLOGGING_MAXSIZE}
+      max-file: ${LOGGING_MAXFILE}
+      max-size: ${LOGGING_MAXSIZE}
   restart: unless-stopped
   volumes:
     - "/etc/localtime:/etc/localtime:ro"
@@ -30,7 +30,7 @@ services:
       - "5353:5353/udp"
       - "1900:1900/udp"
     volumes:
-      - "${DOCKERCONFDIR}/plex:/config"
+      - "${CONF_DIR}/plex:/config"
       - "${DATA_MOUNTPOINT}/tvshows:/data/tvshows"
       - "${DATA_MOUNTPOINT}/movies:/data/movies"
 
@@ -44,7 +44,7 @@ services:
     ports:
       - "3579:3579"
     volumes:
-      - "${DOCKERCONFDIR}/ombi:/config"
+      - "${CONF_DIR}/ombi:/config"
 
   delugevpn:
     <<: *defaults
@@ -58,7 +58,7 @@ services:
       - "58846:58846"
       - "58946:58946"
     volumes:
-      - "${DOCKERCONFDIR}/delugevpn:/config"
+      - "${CONF_DIR}/delugevpn:/config"
       - "${DATA_MOUNTPOINT}/downloads:/data"
 
   jackett:
@@ -68,7 +68,7 @@ services:
     ports:
       - "${LOCAL_IP_ADDR}:9117:9117"
     volumes:
-      - "${DOCKERCONFDIR}/jackett:/config"
+      - "${CONF_DIR}/jackett:/config"
       - "${DATA_MOUNTPOINT}/downloads:/downloads"
 
   sonarr:
@@ -78,7 +78,7 @@ services:
     ports:
       - "${LOCAL_IP_ADDR}:8989:8989"
     volumes:
-      - "${DOCKERCONFDIR}/sonarr:/config"
+      - "${CONF_DIR}/sonarr:/config"
       - "${DATA_MOUNTPOINT}/tvshows:/tv"
       - "${DATA_MOUNTPOINT}/downloads:/downloads"
 
@@ -89,7 +89,7 @@ services:
     ports:
       - "${LOCAL_IP_ADDR}:7878:7878"
     volumes:
-      - "${DOCKERCONFDIR}/radarr:/config"
+      - "${CONF_DIR}/radarr:/config"
       - "${DATA_MOUNTPOINT}/movies:/movies"
       - "${DATA_MOUNTPOINT}/downloads:/downloads"
 
@@ -100,8 +100,8 @@ services:
     ports:
       - "${LOCAL_IP_ADDR}:8181:8181"
     volumes:
-      - "${DOCKERCONFDIR}/tautulli:/config"
-      - "${DOCKERCONFDIR}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro"
+      - "${CONF_DIR}/tautulli:/config"
+      - "${CONF_DIR}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro"
 
   organizr:
     <<: *defaults
@@ -110,11 +110,11 @@ services:
     ports:
       - "${LOCAL_IP_ADDR}:9983:80"
     volumes:
-      - "${DOCKERCONFDIR}/organizr:/config"
+      - "${CONF_DIR}/organizr:/config"
 
 networks:
   rp-subdomains:
     external:
-      name: ${RP_NETWORK_NAME}
+      name: ${RP_NETWORK_NAME:-default}
 
 version: "3.4"
