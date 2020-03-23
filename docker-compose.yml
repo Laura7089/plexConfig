@@ -59,7 +59,7 @@ services:
       - "58946:58946"
     volumes:
       - "${CONF_DIR}/delugevpn:/config"
-      - "${DATA_MOUNTPOINT}/downloads:/data"
+      - "${DATA_MOUNTPOINT}/downloads:/downloads"
 
   jackett:
     <<: *defaults
