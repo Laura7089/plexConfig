@@ -93,6 +93,17 @@ services:
       - "${DATA_MOUNTPOINT}/movies:/movies"
       - "${DATA_MOUNTPOINT}/downloads:/downloads"
 
+  lidarr:
+    <<: *defaults
+    container_name: lidarr
+    image: linuxserver/lidarr
+    ports:
+      - "${LOCAL_IP_ADDR}:8686:8686"
+    volumes:
+      - "${CONF_DIR}/lidarr:/config"
+      - "${DATA_MOUNTPOINT}/music:/music"
+      - "${DATA_MOUNTPOINT}/downloads:/downloads"
+
   tautulli:
     <<: *defaults
     container_name: tautulli
