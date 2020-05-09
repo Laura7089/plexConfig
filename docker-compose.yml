@@ -34,6 +34,18 @@ services:
       - "${DATA_MOUNTPOINT}/tvshows:/data/tvshows"
       - "${DATA_MOUNTPOINT}/movies:/data/movies"
 
+  synclounge:
+    container_name: synclounge
+    environment:
+      - "DOMAIN=edjoduf.co.uk"
+    image: starbix/synclounge
+    networks:
+      - rp-subdomains
+      - default
+    ports:
+      - "8088:8088"
+      - "8089:8089"
+
   ombi:
     <<: *defaults
     container_name: ombi
